@@ -12,7 +12,7 @@
  * @link     http://localhost/html/
  */
 
-$siteurl = "http://localhost/Training/Project/admin/";
+$siteurl = "http://localhost/Training/MyProject/admin/";
 
 $dbhost = "localhost";
 $dbuser = "root";
