@@ -1,17 +1,26 @@
 <?php include('header.php'); ?>
 <?php include('sidebar.php'); ?>
-<?php include('config.php'); 
+<?php include('config.php');
 
 if (isset($_POST['addProduct'])) {
     $category = isset($_POST['category'])?$_POST['category']:'';
     $pname = isset($_POST['name'])?$_POST['name']:'';
     $price = isset($_POST['price'])?$_POST['price']:'';
-    $image = isset($_POST['image'])?$_POST['image']:'';
+    $var = rand(1111, 9999);
+    $var1 = rand(1111, 9999);
+    $var2 = $var.$var1;
+    $var2 = md5($var2);
+    $img = $_FILES['image'] ['name'];
+    $img1 = "./Uploaded/".$var2.$img;
+    $image = "Uploaded/".$var2.$img;
+    move_uploaded_file($_FILES["image"] ["tmp_name"], $img1);
+    $stock = isset($_POST['stock'])?$_POST['stock']:'';
     $tags = isset($_POST['checkbox'])?$_POST['checkbox']:'';
-    $description = isset($_POST['description'])?$_POST['description']:'';
+    $shortdescription = isset($_POST['shortdescription'])?$_POST['shortdescription']:'';
+    $longdescription = isset($_POST['longdescription'])?$_POST['longdescription']:'';
     $var = implode(', ', $tags);
 
-    $sql = "INSERT INTO products (`category_id`, `name`, `price`, `image`, `short_desc`, `long_desc`) VALUES ('".$category."', '".$pname."', '".$price."', '".$image."', '".$var."', '".$description."')";
+    $sql = "INSERT INTO products (`category_id`, `tag_id`, `name`, `price`, `image`, `stock_status`, `short_desc`, `long_desc`) VALUES ('".$category."', '".$var."', '".$pname."', '".$price."', '".$image."', '".$stock."', '".$shortdescription."', '".$longdescription."')";
 
     if ($conn->query($sql) === true) {
         //echo "New record created successfully.";
@@ -24,7 +33,6 @@ if (isset($_POST['addProduct'])) {
         
 
     $conn->close();
-    
 }
 ?>
 
@@ -233,7 +241,7 @@ if (isset($_POST['addProduct'])) {
 					
 					<div class="tab-content" id="tab2">
 					
-						<form action="products.php" method="post">
+						<form action="addproduct.php" method="post" enctype="multipart/form-data">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 								
@@ -249,31 +257,64 @@ if (isset($_POST['addProduct'])) {
                                     <input class="text-input small-input" type="file" id="small-input" name="image" /> <!-- Classes for input-notification: success, error, information, attention -->
                                 </p>
 								<p>
+									<label>Stock Status</label>
+									<input type="radio" name="stock" value="In stock" /> In Stock<br />
+									<input type="radio" name="stock" value="Out of Stock" /> Out of Stock
+								</p>
+
+                                
+								<p>
 									<label>Category</label>              
 									<select name="category" class="small-input">
-										<option value="1">Men</option>
-										<option value="2">Women</option>
-										<option value="3">Kids</option>
+									<?php
+								    $sql = "SELECT category_id, catname FROM categories";
+                                    $result = $conn->query($sql);
 
+                                    if ($result->num_rows > 0) {
+                                        // output data of each row
+                                        while($row = $result->fetch_assoc()) { 
+									    ?>
+										<option value=<?php echo $row['category_id'] ?>><?php echo $row['catname'] ?></option>
+								        <?php
+									    }
+                                    } else {
+                                        // echo "0 results";
+                                    }
+                                    ?>
 									</select> 
 								</p>
                                 <p>
 									<label>Tags</label>
-									<input type="checkbox" name="checkbox[]" value="Fashion" /> Fashion <input type="checkbox" name="checkbox[]" value="Electronics" /> Electronics <input type="checkbox" name="checkbox[]" value="Mobiles" /> Mobiles <input type="checkbox" name="checkbox[]" value="Furniture" /> Furniture <input type="checkbox" name="checkbox[]" value="Bags" /> Bags <input type="checkbox" name="checkbox[]" value="Other" /> Other
+									<?php
+								    $sql = "SELECT tag_id, tname FROM tags";
+                                    $result = $conn->query($sql);
+
+                                    if ($result->num_rows > 0) {
+                                        // output data of each row
+                                        while($row = $result->fetch_assoc()) { 
+									    ?>
+										<input type="checkbox" name="checkbox[]" value="<?php echo $row['tag_id'] ?>" /> <?php echo $row['tname'] ?>
+								        <?php
+									    }
+                                    } else {
+                                        // echo "0 results";
+                                    }
+                                    ?>
+									
 								</p>
 								<p>
-									<label>Description</label>
-									<textarea class="text-input textarea wysiwyg" id="textarea" name="description" cols="79" rows="15"></textarea>
+									<label>Short Description</label>
+									<input class="text-input large-input" type="text" id="large-input" name="shortdescription" />
+								</p>
+								<p>
+									<label>Long Description</label>
+									<textarea class="text-input textarea wysiwyg" id="textarea" name="longdescription" cols="79" rows="15"></textarea>
                                 </p>
 								
 								
-								<!--
-								<p>
-									<label>Radio buttons</label>
-									<input type="radio" name="radio1" /> Individual Account<br />
-									<input type="radio" name="radio2" /> Business Account
-								</p>
-								-->
+								
+								
+								
 								
 								<!--
 								<p>
