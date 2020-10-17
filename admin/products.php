@@ -241,7 +241,7 @@ if (isset($_POST['addProduct'])) {
 					
 					<div class="tab-content" id="tab2">
 					
-						<form action="addproduct.php" method="post" enctype="multipart/form-data">
+						<form action="products.php" method="post" enctype="multipart/form-data">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 								
@@ -286,8 +286,8 @@ if (isset($_POST['addProduct'])) {
                                 <p>
 									<label>Tags</label>
 									<?php
-								    $sql = "SELECT tag_id, tname FROM tags";
-                                    $result = $conn->query($sql);
+								    $sqla = "SELECT tag_id, tname FROM tags";
+                                    $result = $conn->query($sqla);
 
                                     if ($result->num_rows > 0) {
                                         // output data of each row
@@ -308,7 +308,7 @@ if (isset($_POST['addProduct'])) {
 								</p>
 								<p>
 									<label>Long Description</label>
-									<textarea class="text-input textarea wysiwyg" id="textarea" name="longdescription" cols="79" rows="15"></textarea>
+									<textarea class="text-input large-input" id="large-input" name="longdescription" cols="79" rows="15"></textarea>
                                 </p>
 								
 								

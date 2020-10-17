@@ -1131,6 +1131,7 @@ img {
 }
 .aa-product-catg li figure {
   position: relative;
+  width: 250px;
   height: 300px;
 }
 .aa-product-catg li figure .aa-product-img {
@@ -1142,6 +1143,7 @@ img {
   -o-transition: all 0.5s;
   transition: all 0.5s;
 }
+
 .aa-product-catg li figure .aa-add-card-btn {
   background: #000 none repeat scroll 0 0;
   bottom: 0;
