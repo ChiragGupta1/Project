@@ -75,9 +75,21 @@
             {
               $sql = "SELECT * FROM products WHERE `category_id`='$_GET[category_id]' LIMIT $start_from,$per_page";
             }
-            elseif(isset($_GET['tag_id']))
+            elseif(isset($_GET['tname']))
             {
-              $sql = "SELECT * FROM products WHERE `tag_id`='$_GET[tag_id]' LIMIT $start_from,$per_page";
+              $sql = "SELECT * FROM products WHERE `tname` LIKE '%$_GET[tname]%' LIMIT $start_from,$per_page";
+            }
+            elseif(isset($_GET['color']))
+            {
+              $sql = "SELECT * FROM products WHERE `color` LIKE '%$_GET[color]%' LIMIT $start_from,$per_page";
+            }
+            elseif(isset($_POST['filter']))
+            {
+              $lowest_price = isset($_POST['lowest_price'])?$_POST['lowest_price']:'';
+              $lowest_price1 = (int)$lowest_price;
+              $highest_price = isset($_POST['highest_price'])?$_POST['highest_price']:'';
+              $highest_price1 = (int)$highest_price;
+              $sql = "SELECT * FROM products WHERE `price` BETWEEN $lowest_price1 AND $highest_price1 LIMIT $start_from,$per_page";
             }
             else
             {
@@ -260,7 +272,7 @@
               // output data of each row
                   while($row = $result->fetch_assoc()) { 
 			            ?>
-                  <a href="product.php?tag_id=<?php echo $row['tag_id'] ?>"><?php echo $row['tname'] ?><p hidden>A $_GET</p></a><br>
+                  <a href="product.php?tname=<?php echo $row['tname'] ?>"><?php echo $row['tname'] ?><p hidden>A $_GET</p></a>
                   <?php
 				          }
               } else {
@@ -274,12 +286,14 @@
               <h3>Shop By Price</h3>              
               <!-- price range -->
               <div class="aa-sidebar-price-range">
-               <form action="">
+               <form action="product.php" method="POST">
                   <div id="skipstep" class="noUi-target noUi-ltr noUi-horizontal noUi-background">
                   </div>
-                  <span id="skip-value-lower" class="example-val" name="lowest_price">30.00</span>
-                 <span id="skip-value-upper" class="example-val" name="highest_price">100.00</span>
-                 <button class="aa-filter-btn" type="submit">Filter</button>
+                 <span id="skip-value-lower" class="example-val" name="lowest">30.00</span>
+                 <input type="hidden" name="lowest_price" id="lowest_price" value="not yet defined">
+                 <span id="skip-value-upper" class="example-val" name="highest">100.00</span>
+                 <input type="hidden" name="highest_price" id="highest_price" value="not yet defined">
+                 <button class="aa-filter-btn" type="submit" name="filter" onclick="filterFunction()">Filter</button>
                </form>
               </div>              
 
@@ -287,20 +301,24 @@
             <!-- single sidebar -->
             <div class="aa-sidebar-widget">
               <h3>Shop By Color</h3>
+              
               <div class="aa-color-tag">
-                <a class="aa-color-green" href="#"></a>
-                <a class="aa-color-yellow" href="#"></a>
-                <a class="aa-color-pink" href="#"></a>
-                <a class="aa-color-purple" href="#"></a>
-                <a class="aa-color-blue" href="#"></a>
-                <a class="aa-color-orange" href="#"></a>
-                <a class="aa-color-gray" href="#"></a>
-                <a class="aa-color-black" href="#"></a>
-                <a class="aa-color-white" href="#"></a>
-                <a class="aa-color-cyan" href="#"></a>
-                <a class="aa-color-olive" href="#"></a>
-                <a class="aa-color-orchid" href="#"></a>
-              </div>                            
+              <?php
+			        $sql = "SELECT * FROM colors";
+              $result = $conn->query($sql);
+
+              if ($result->num_rows > 0) {
+              // output data of each row
+                  while($row = $result->fetch_assoc()) { 
+			            ?>
+                <a class="aa-color-<?php echo $row['color'] ?>" href="product.php?color=<?php echo $row['color'] ?>"><p hidden>A $_GET</p></a>
+              <?php
+				          }
+              } else {
+                  // echo "0 results";
+              }
+              ?>    
+              </div>                        
             </div>
             <!-- single sidebar -->
             <div class="aa-sidebar-widget">

@@ -222,7 +222,7 @@ if (isset($_POST['tags'])) {
                                 
 								<p>
 									<label>Description</label>
-									<textarea class="text-input textarea wysiwyg" id="textarea" name="tdescription" cols="79" rows="15"></textarea>
+									<textarea class="text-input large-input" id="large-input" name="tdescription" cols="79" rows="15"></textarea>
                                 </p>
 								
 								

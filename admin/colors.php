@@ -1,29 +1,13 @@
 <?php include('header.php'); ?>
 <?php include('sidebar.php'); ?>
-<?php include('config.php');
+<?php include('config.php'); 
 
-if (isset($_POST['addProduct'])) {
-    $category = isset($_POST['category'])?$_POST['category']:'';
-    $pname = isset($_POST['name'])?$_POST['name']:'';
-    $price = isset($_POST['price'])?$_POST['price']:'';
-    $var = rand(1111, 9999);
-    $var1 = rand(1111, 9999);
-    $var2 = $var.$var1;
-    $var2 = md5($var2);
-    $img = $_FILES['image'] ['name'];
-    $img1 = "./Uploaded/".$var2.$img;
-    $image = "Uploaded/".$var2.$img;
-    move_uploaded_file($_FILES["image"] ["tmp_name"], $img1);
-	$stock = isset($_POST['stock'])?$_POST['stock']:'';
-    $quantity = isset($_POST['quantity'])?$_POST['quantity']:'';
-    $tags = isset($_POST['checkbox'])?$_POST['checkbox']:'';
-    $colors = isset($_POST['checkbox1'])?$_POST['checkbox1']:'';
-    $shortdescription = isset($_POST['shortdescription'])?$_POST['shortdescription']:'';
-    $longdescription = isset($_POST['longdescription'])?$_POST['longdescription']:'';
-	$var = implode(', ', $tags);
-	$var_color = implode(', ', $colors);
+if (isset($_POST['colors'])) {
+    $cname = isset($_POST['cname'])?$_POST['cname']:'';
+    $coldescription = isset($_POST['coldescription'])?$_POST['coldescription']:'';
+    
 
-    $sql = "INSERT INTO products (`category_id`, `tname`, `name`, `price`, `image`, `color`, `stock_status`, `quantity`, `short_desc`, `long_desc`) VALUES ('".$category."', '".$var."', '".$pname."', '".$price."', '".$image."', '".$var_color."', '".$stock."', '".$quantity."', '".$shortdescription."', '".$longdescription."')";
+    $sql = "INSERT INTO colors (`color`, `col_description`) VALUES ('".$cname."', '".$coldescription."')";
 
     if ($conn->query($sql) === true) {
         //echo "New record created successfully.";
@@ -36,6 +20,7 @@ if (isset($_POST['addProduct'])) {
         
 
     $conn->close();
+    
 }
 ?>
 
@@ -91,10 +76,7 @@ if (isset($_POST['addProduct'])) {
 								<tr>
 								   <th><input class="check-all" type="checkbox" /></th>
 								   <th>Name</th>
-								   <th>Price</th>
-								   <th>Category</th>
-								   <th>Tags</th>
-								   <th>Action</th>
+								   <th>Description</th>
 								</tr>
 								
 							</thead>
@@ -127,8 +109,6 @@ if (isset($_POST['addProduct'])) {
 							<tbody>
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -141,8 +121,6 @@ if (isset($_POST['addProduct'])) {
 								
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -155,8 +133,6 @@ if (isset($_POST['addProduct'])) {
 								
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -169,8 +145,6 @@ if (isset($_POST['addProduct'])) {
 								
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -183,8 +157,6 @@ if (isset($_POST['addProduct'])) {
 								
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -197,8 +169,6 @@ if (isset($_POST['addProduct'])) {
 								
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -211,8 +181,6 @@ if (isset($_POST['addProduct'])) {
 								
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -225,8 +193,6 @@ if (isset($_POST['addProduct'])) {
 								
 								<tr>
 									<td><input type="checkbox" /></td>
-									<td>Lorem ipsum dolor</td>
-									<td>Consectetur adipiscing</td>
 									<td><a href="#" title="title">Sit amet</a></td>
 									<td>Donec tortor diam</td>
 									<td>
@@ -244,104 +210,19 @@ if (isset($_POST['addProduct'])) {
 					
 					<div class="tab-content" id="tab2">
 					
-						<form action="products.php" method="post" enctype="multipart/form-data">
+						<form action="colors.php" method="post">
 							
 							<fieldset> <!-- Set class to "column-left" or "column-right" on fieldsets to divide the form into columns -->
 								
 								<p>
-									<label>Name</label>
-										<input class="text-input small-input" type="text" id="small-input" name="name" /> <!-- Classes for input-notification: success, error, information, attention -->
+									<label>Color Name</label>
+										<input class="text-input small-input" type="text" id="small-input" name="cname" /> <!-- Classes for input-notification: success, error, information, attention -->
 										<!-- <br /><small>A small description of the field</small> -->
 								</p>
-                                <p>
-									<label>Price</label>
-                                    <input class="text-input small-input" type="number" id="small-input" name="price" /> <!-- Classes for input-notification: success, error, information, attention -->
-                                    <label>Image</label>
-                                    <input class="text-input small-input" type="file" id="small-input" name="image" /> <!-- Classes for input-notification: success, error, information, attention -->
-                                </p>
-								<p>
-									<label>Stock Status</label>
-									<input type="radio" name="stock" value="In stock" /> In Stock<br />
-									<input type="radio" name="stock" value="Out of Stock" /> Out of Stock
-								</p>
-								<p>
-									<label>Quantity</label>
-										<input class="text-input small-input" type="number" id="small-input" name="quantity" /> <!-- Classes for input-notification: success, error, information, attention -->
-										<!-- <br /><small>A small description of the field</small> -->
-								</p>
-
                                 
 								<p>
-									<label>Category</label>              
-									<select name="category" class="small-input">
-									<?php
-								    $sql = "SELECT category_id, catname FROM categories";
-                                    $result = $conn->query($sql);
-
-                                    if ($result->num_rows > 0) {
-                                        // output data of each row
-                                        while($row = $result->fetch_assoc()) { 
-									    ?>
-										<option value=<?php echo $row['category_id'] ?>><?php echo $row['catname'] ?></option>
-								        <?php
-									    }
-                                    } else {
-                                        // echo "0 results";
-                                    }
-                                    ?>
-									</select> 
-								</p>
-                                <p>
-									<label>Tags</label>
-									<?php
-								    $sqla = "SELECT tag_id, tname FROM tags";
-                                    $result = $conn->query($sqla);
-
-                                    if ($result->num_rows > 0) {
-                                        // output data of each row
-                                        while($row = $result->fetch_assoc()) { 
-									    ?>
-										<input type="checkbox" name="checkbox[]" value="<?php echo $row['tname'] ?>" /> <?php echo $row['tname'] ?>
-								        <?php
-									    }
-                                    } else {
-                                        // echo "0 results";
-                                    }
-                                    ?>
-									
-								</p>
-
-
-								
-                                <p>
-									<label>Colors</label>
-									<?php
-								    $sqla = "SELECT * FROM colors";
-                                    $result = $conn->query($sqla);
-
-                                    if ($result->num_rows > 0) {
-                                        // output data of each row
-                                        while($row = $result->fetch_assoc()) { 
-									    ?>
-										<input type="checkbox" name="checkbox1[]" value="<?php echo $row['color'] ?>" /> <?php echo $row['color'] ?>
-								        <?php
-									    }
-                                    } else {
-                                        // echo "0 results";
-                                    }
-                                    ?>
-									
-								</p>
-
-
-
-								<p>
-									<label>Short Description</label>
-									<input class="text-input large-input" type="text" id="large-input" name="shortdescription" />
-								</p>
-								<p>
-									<label>Long Description</label>
-									<textarea class="text-input large-input" id="large-input" name="longdescription" cols="79" rows="15"></textarea>
+									<label>Description</label>
+									<textarea class="text-input large-input" id="large-input" name="coldescription" cols="79" rows="15"></textarea>
                                 </p>
 								
 								
@@ -356,7 +237,7 @@ if (isset($_POST['addProduct'])) {
 								</p>
 -->
 								<p>
-									<input class="button" type="submit" name="addProduct" value="Submit" />
+									<input class="button" type="submit" name="colors" value="Submit" />
 								</p>
 								
 							</fieldset>

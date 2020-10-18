@@ -31,17 +31,13 @@ if ($conn->connect_error) {
 ?>
 
 <script>
-    $(document).ready(function(){
-      $('.aa-add-card-btn').click(function(){
-        var product_id = $(this).data('product_id');
-        $.ajax({
-          method: "POST",
-          url: 'cart.php',
-          data: { 'product_id': product_id },
-          success: function (response) {
-              var get_val = JSON.parse(response);
-          }
-        });
-      });
-    });
+  function filterFunction() {
+    lowestValue = $('#skip-value-lower').html();
+    highestValue = $('#skip-value-upper').html();
+
+    $("#lowest_price").val(lowestValue);
+    $("#highest_price").val(highestValue);
+
+    
+  }
 </script>
