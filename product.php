@@ -1,4 +1,4 @@
-<?php include('config.php'); ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,6 +9,7 @@
     <title>Daily Shop | Product</title>
 
 <?php include('header.php'); ?>
+<?php include('config.php'); ?>
  
   <!-- catg header banner section -->
   <section id="aa-catg-head-banner">
@@ -106,7 +107,7 @@
                 <li>
                   <figure>
                     <a class="aa-product-img" href="product-detail.php?product_id=<?php echo $row['product_id'] ?>"><img src="admin/<?php echo $row['image'] ?>" alt="polo shirt img" width="250" height="300"><p hidden>A $_GET</p></a>
-                    <a class="aa-add-card-btn"href="#" data-product_id="<?php echo $row['product_id'] ?>"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
+                    <a class="aa-add-card-btn"href="#" data-productid="<?php echo $row['product_id'] ?>"><span class="fa fa-shopping-cart"></span>Add To Cart</a>
                     <figcaption>
                       <h4 class="aa-product-title"><a href="#"><?php echo $row['name'] ?></a></h4>
                       <span class="aa-product-price">$ <?php echo $row['price'] ?></span>
@@ -114,17 +115,40 @@
                     </figcaption>
                   </figure>                         
                   <div class="aa-product-hvr-content">
-                    <a href="#" data-toggle2="tooltip" data-placement="top" title="Quick View" data-toggle="modal" data-target="#quick-view-modal"><span class="fa fa-search"></span></a>                            
+                    <a href="#" data-toggle2="tooltip" data-placement="top" title="Quick View" data-toggle="modal" data-target="#quick-view-modal<?php echo $row['product_id'] ?>"><p hidden>A $_GET</p><span class="fa fa-search"></span></a>                            
                   </div>
                   <!-- product badge -->
                   <span class="aa-badge aa-sale" href="#">SALE!</span>
                 </li>                                         
               </ul>
 
+              <?php
+				}
+            } else {
+                echo "0 results";
+            }
+            ?>
+
+<?php
+if(isset($_GET['product_id']))
+{
+    $sql = "SELECT * FROM products WHERE `product_id`='$_GET[product_id]'";
+}
+else
+{
+    $sql = "SELECT * FROM products LIMIT $start_from,$per_page";
+}
+            
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) { 
+?>
               
 
               <!-- quick view modal -->                  
-              <div class="modal fade" id="quick-view-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal fade" id="quick-view-modal<?php echo $row['product_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">                      
                     <div class="modal-body">
@@ -137,7 +161,7 @@
                               <div class="simpleLens-container">
                                   <div class="simpleLens-big-image-container">
                                       <a class="simpleLens-lens-image" data-lens-image="admin/<?php echo $row['image'] ?>">
-                                          <img src="admin/<?php echo $row['image'] ?>" class="simpleLens-big-image">
+                                          <img src="admin/<?php echo $row['image'] ?>" class="simpleLens-big-image"  width="250" height="300">
                                       </a>
                                   </div>
                               </div>
@@ -187,12 +211,12 @@
                 </div><!-- /.modal-dialog -->
               </div>
               
-              <?php
-				}
-            } else {
-                echo "0 results";
-            }
-            ?>
+    <?php
+		}
+} else {
+    echo "0 results";
+}
+?>
               <!-- / quick view modal -->   
             </div>
 
